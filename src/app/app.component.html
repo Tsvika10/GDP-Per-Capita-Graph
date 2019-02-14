@@ -1,0 +1,61 @@
+<div class="all" [class.allLoaded]="allLoaded">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <button *ngIf="(user.uid | async); else fakeNewPost" routerLink='/gdpData' mat-button>New post</button>
+            <ng-template #fakeNewPost>
+                <button (click)="openSnackBar()" mat-button>New post</button>
+            </ng-template>
+            <button routerLink='/posts' mat-button>Posts</button>
+            <span class="fill-remaining-space"></span>
+
+            <span class="u-light">
+                <div *ngIf="user.uid | async as uid;">
+                    <span *ngIf="user.isAdmin | async">admin&nbsp;</span><span
+                        class="u-bold">{{user.userName | async}}</span>, you are logged
+                    in
+                    &nbsp;<button (click)="user.logout()" mat-stroked-button color="white">Log
+                        out</button>
+                </div>
+            </span>
+            <div>
+                <button *ngIf="!(user.uid | async);" (click)="openLoginDialog()" mat-stroked-button color="white">Log in
+                </button>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <button class="mat-menu" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button *ngIf="(user.uid | async); else fakeNewPost" routerLink='/gdpData' mat-menu-item>
+            <span>New post</span>
+        </button>
+        <button routerLink='/posts' mat-menu-item>
+            <span>Posts</span>
+        </button>
+        <div *ngIf="user.uid | async as uid; else login">
+            <div mat-menu-item>
+                <span *ngIf="user.isAdmin | async">admin</span>
+                <span class="u-bold">
+                    {{user.userName | async}}
+                </span>
+                You are logged in &nbsp;
+            </div>
+            <div (click)="user.logout()" mat-menu-item>
+                Log out
+            </div>
+        </div>
+        <ng-template #login>
+            <button class="u-bold" *ngIf="!(user.uid | async);" (click)="openLoginDialog()" mat-menu-item
+                color="white">Log
+                in
+            </button>
+        </ng-template>
+    </mat-menu>
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+
+
+</div>

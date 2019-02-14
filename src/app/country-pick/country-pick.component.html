@@ -1,0 +1,14 @@
+<form class="form">
+    <mat-form-field class="full-width">
+        <mat-icon (click)="onDeleteInput()" [class.invisibleIcon]="!inputNotEmpty">cancel</mat-icon>
+        <input matInput [placeholder]="placeholder" aria-label="Country" [matAutocomplete]="auto" [formControl]="countryCtrl">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let country of filteredCountries | async" [value]="country.name" (onSelectionChange)="onSelect(country.code, country.name, $event)">
+                <img class="option-img" *ngIf="country.code" aria-hidden src="https://www.countryflags.io/{{ country.code }}/shiny/64.png"
+                    height="25">
+                <span>{{country.name}}</span>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <br>
+</form>

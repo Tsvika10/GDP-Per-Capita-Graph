@@ -1,0 +1,56 @@
+<div *ngIf="loginMode; else register">
+  <form [formGroup]="loginForm">
+    <div mat-dialog-content>
+      <h1 mat-dialog-title>Login</h1>
+
+      <mat-form-field>
+        <input [disabled]="loading" formControlName="email" type="email" email matInput placeholder="Email">
+        <mat-error *ngIf="fl.email.errors?.email">Not a valid email</mat-error>
+        <mat-error *ngIf="fl.email.errors?.required">You must enter a value</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input [disabled]="loading" formControlName="password" matInput type="password" placeholder="Password">
+        <mat-error *ngIf="fl.password.errors?.password">Not a valid password</mat-error>
+        <mat-error *ngIf="fl.password.errors?.required">You must enter a value</mat-error>
+
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button [disabled]="flInvalid || loading" (click)="onSubmit()" cdkFocusInitial>Login</button>
+      <button mat-button [disabled]="loading" (click)="onChangeLoginMode()" color="primary" mat-raised-button
+        color="primary" cdkFocusInitial>Register</button>
+    </div>
+  </form>
+</div>
+<ng-template #register>
+  <form [formGroup]="registerForm">
+    <div mat-dialog-content>
+      <h1 mat-dialog-title>Register</h1>
+      <mat-form-field>
+        <input [disabled]="loading" email type="email" formControlName="email" matInput placeholder="Email">
+        <mat-error *ngIf="fr.email.errors?.email">Not a valid email</mat-error>
+        <mat-error *ngIf="fr.email.errors?.required">You must enter a value</mat-error>
+
+      </mat-form-field>
+      <mat-form-field>
+        <input [disabled]="loading" formControlName="username" matInput placeholder="Username">
+        <mat-error *ngIf="fr.username.errors?.username">Not a valid username</mat-error>
+        <mat-error *ngIf="fr.username.errors?.required">You must enter a value</mat-error>
+
+      </mat-form-field>
+      <mat-form-field>
+        <input [disabled]="loading" formControlName="password" matInput type="password" placeholder="Password">
+        <mat-error *ngIf="fr.password.errors?.password">Not a valid password</mat-error>
+        <mat-error *ngIf="fr.password.errors?.required">You must enter a value</mat-error>
+
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button [disabled]="frInvalid || loading" mat-button (click)="onSubmitRegister()" *ngIf="!loginMode" color="white"
+        cdkFocusInitial>Register</button>
+      <button [disabled]="loading" mat-button *ngIf="!loginMode" (click)="onChangeLoginMode()" color="primary"
+        mat-raised-button cdkFocusInitial>Login</button>
+    </div>
+  </form>
+</ng-template>
+<button [disabled]="loading" class="google-button" (click)="onSignGoogle()"></button>

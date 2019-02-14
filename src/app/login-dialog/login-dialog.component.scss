@@ -1,0 +1,23 @@
+.google-button{
+    width: 191px;
+    height: 46px;
+    cursor: pointer;
+    border: none!important;
+    background-color: transparent;
+    background-image: url('assets/btn_google_signin_dark_normal_web.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: 75ms;
+    margin-top: 2rem;
+    
+    &:disabled{
+        background-image: url('assets/btn_google_signin_light_disabled_web.png');
+    }
+    &:focus{
+        outline: none!important;
+        background-image: url('assets/btn_google_signin_dark_focus_web.png');
+    }
+    &:active{
+        background-image: url('assets/btn_google_signin_dark_pressed_web.png');
+    }
+}

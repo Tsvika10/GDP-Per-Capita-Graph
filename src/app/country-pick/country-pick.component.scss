@@ -1,0 +1,30 @@
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  display: inline-block;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.option-img {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+mat-icon {
+  color: #929292;
+  display: block;
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.invisibleIcon{
+  cursor: default;
+  visibility: hidden;
+}

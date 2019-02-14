@@ -1,0 +1,49 @@
+<div class="u-margin-bottom">
+  <div *ngIf="postSelected else emptyContainer">
+    <div *ngIf="postLoaded else loadingBlock">
+      <app-gdp-graph-canvas [countryGdpDataList]="countryGdpDataList">
+      </app-gdp-graph-canvas>
+      <h2 class="post-headline">{{currentPost.payload.val().data.headline}}</h2>
+      <a [routerLink]="['/gdpData/edit/' + currentPost.key]" routerLinkActive="router-link-active"
+        *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating" class="edit-button"
+        mat-raised-button color="accent">Edit</a>
+      <button (click)="onDelete()" routerLinkActive="router-link-active"
+        *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating" class="remove-button"
+        mat-raised-button color="warn">Delete
+      </button>
+    </div>
+    <ng-template #loadingBlock>
+      <div class="loadingContainer">
+        <div class="spinner-container">
+          <mat-spinner color="accent"></mat-spinner>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #emptyContainer>
+    <div class="emptyContainer">
+      <div class="emptyContainer-text">
+        Please select a post
+      </div>
+    </div>
+  </ng-template>
+</div>
+<hr class="u-margin-bottom">
+<mat-card class="post-card"
+  [ngClass]="{'selectable': post.key !== currentPost.key && (postLoaded || !postSelected), 'post-selected':post.key === currentPost.key}"
+  (click)="onLoadPost(post)" *ngFor="let post of postsGroup">
+  <div>
+    <span class="post__text">{{ post.payload.val().data.headline }} </span>
+    <span>
+      <mat-card-title>{{ post.payload.val().displayName }}</mat-card-title>
+      <mat-card-subtitle>{{ post.payload.val().postDate }}&nbsp;<span class="edited"
+          *ngIf="post.payload.val().data.edited">
+          Edited</span></mat-card-subtitle>
+    </span>
+  </div>
+</mat-card>
+<div class="u-inline-center">
+  <button *ngIf="postsGroup.length !== (database.getCount | async) " mat-button color="primary"
+    (click)="onLoadMore()">Load
+    more</button>
+</div>

@@ -1,0 +1,52 @@
+<h3>GDP (nominal) per capita</h3>
+
+<app-country-pick [placeholder]="'Select here countries for comparsion'" (countrySelected)="countrySelected($event)">
+</app-country-pick>
+
+<button class="addButton" mat-button color="warn" mat-raised-button (click)="onAddCountry()"
+    [disabled]="!isCountrySelected">
+    Add
+</button>
+<br>
+<mat-form-field>
+    <mat-select [disabled]="duringUpdate" #startYear [(ngModel)]="selectedStartYear" placeholder="Start year"
+        (selectionChange)="onUpdateYear()">
+        <mat-option [value]="year" *ngFor="let year of startYearsRange">{{year}}</mat-option>
+    </mat-select>
+</mat-form-field>
+&nbsp;
+<mat-form-field>
+    <mat-select [disabled]="duringUpdate" #endYear [(ngModel)]="selectedEndYear" placeholder="End year"
+        (selectionChange)="onUpdateYear()">
+        <mat-option [value]="year" *ngFor="let year of endYearsRange">{{year}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<span class="warn-span" *ngIf="error">An error occurred while fetching data/No data was found</span>
+<mat-chip-list>
+    <mat-chip selected *ngFor="let country of countryGdpDataList.list" [selectable]="true" [removable]="true"
+        (removed)="onRemoveCountry(country)" color="none">
+        {{ country.label }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+</mat-chip-list>
+<div *ngIf="!duringUpdate else loadingBlock">
+    <div class="container">
+        <app-gdp-graph-canvas [countryGdpDataList]="countryGdpDataList"></app-gdp-graph-canvas>
+        <div *ngIf="countryList.length > 0">
+            <mat-form-field class="example-full-width">
+                <input matInput #hl placeholder="headline" [(ngModel)]="headline">
+            </mat-form-field>
+            &nbsp;
+            <button (click)="onSaveGraph(hl.value)" [disabled]='savingMode || !headline' mat-raised-button
+                color="primary">Save</button>
+        </div>
+    </div>
+</div>
+<ng-template #loadingBlock>
+    <div class="loadingContainer">
+        <div class="spinner-container">
+            <mat-spinner color="accent"></mat-spinner>
+        </div>
+    </div>
+</ng-template>
