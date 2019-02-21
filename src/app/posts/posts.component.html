@@ -43,7 +43,9 @@
   </div>
 </mat-card>
 <div class="u-inline-center">
-  <button *ngIf="postsGroup.length !== (database.getCount | async) " mat-button color="primary"
+  <button *ngIf="postsLoaded && postsGroup.length !== (database.getCount | async) " mat-button color="primary"
     (click)="onLoadMore()">Load
-    more</button>
+    more
+  </button>
+  <mat-spinner class="loading-spinner" *ngIf="!postsLoaded" color="warn"></mat-spinner>
 </div>

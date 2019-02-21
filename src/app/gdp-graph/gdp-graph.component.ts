@@ -117,6 +117,16 @@ export class GdpGraphComponent implements OnInit, OnDestroy {
   }
 
   onUpdateYear() {
+    this.startYearsRange = [];
+    this.endYearsRange = [];
+
+    for (let i = 1968; i <= this.selectedEndYear - 1; i++) {
+      this.startYearsRange.push(i);
+    }
+    for (let i = this.selectedStartYear + 1; i <= (new Date).getFullYear() - 1; i++) {
+      this.endYearsRange.push(i);
+    }
+
     if (this.countryList.length > 0) {
       this.onUpdateGdp();
     }
@@ -134,15 +144,7 @@ export class GdpGraphComponent implements OnInit, OnDestroy {
     this.duringUpdate = true;
     this.isCountrySelected = false;
 
-    this.startYearsRange = [];
-    this.endYearsRange = [];
 
-    for (let i = 1968; i <= this.selectedEndYear - 1; i++) {
-      this.startYearsRange.push(i);
-    }
-    for (let i = this.selectedStartYear + 1; i <= (new Date).getFullYear() - 1; i++) {
-      this.endYearsRange.push(i);
-    }
   }
 
   onSaveGraph(headline) {

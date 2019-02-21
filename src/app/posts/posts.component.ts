@@ -21,7 +21,7 @@ export class PostsComponent implements OnInit {
   postSubscribers: Subscription[] = [];
   postsGroup: any[] = [];
   lastPostTimeStamp: number = 0;
-  allPostLoaded: boolean = false;
+  postsLoaded: boolean = false;
   routeSubscriber: Subscription;
 
 
@@ -38,11 +38,13 @@ export class PostsComponent implements OnInit {
     }
     this.postSubscribers = [];
     this.postsChanges = [];
-    this.postSubscribers.push(this.database.getThreePosts(0).subscribe(res => { this.postsGroup = []; for (let item of res) { this.postsGroup.push(item) } }))
+    this.postSubscribers.push(this.database.getThreePosts(0).subscribe(res => {
+      this.postsLoaded = true; this.postsGroup = []; for (let item of res) { this.postsGroup.push(item) };
+    }))
   }
 
   onLoadPost(event) {
-    if (event.key !== this.currentPost.key) {
+    if ((this.postLoaded || !this.postSelected) && event.key !== this.currentPost.key) {
       this.postLoaded = false;
       setTimeout(() => {
         this.currentPost = event;
@@ -59,7 +61,7 @@ export class PostsComponent implements OnInit {
   onLoadMore() {
     this.lastPostTimeStamp = this.postsGroup[this.postsGroup.length - 1].payload.val().dateStamp;
     this.database.getThreePosts(this.lastPostTimeStamp).subscribe(res => {
-      if (res.length < 3) { this.allPostLoaded = true } res.shift();
+      res.shift();
       for (let item of res) { this.postsGroup.push(item) }
     });
   }
@@ -72,7 +74,6 @@ export class PostsComponent implements OnInit {
       this.initFirstPosts();
       this.notUpdating = true;
       this.postSelected = false;
-      this.allPostLoaded = false;
 
     }).catch(err => {
       console.log(err)
