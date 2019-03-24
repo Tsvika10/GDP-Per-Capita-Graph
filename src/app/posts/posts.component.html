@@ -1,53 +1,71 @@
-<div class="u-margin-bottom">
-  <div *ngIf="postSelected else emptyContainer">
-    <div class="dataContainer" *ngIf="postLoaded else loadingBlock">
-      <app-gdp-graph-canvas [countryGdpDataList]="countryGdpDataList">
-      </app-gdp-graph-canvas>
-      <h2 class="post-headline">{{currentPost.payload.val().data.headline}}</h2>
-      <a [routerLink]="['/gdpData/edit/' + currentPost.key]" routerLinkActive="router-link-active"
-        *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating" class="edit-button"
-        mat-raised-button color="accent">Edit</a>
-      <button (click)="onDelete()" routerLinkActive="router-link-active"
-        *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating" class="remove-button"
-        mat-raised-button color="warn">Delete
-      </button>
+<div class="container">
+  <div class="header">
+    <h1>
+      GDP per capita app
+    </h1>
+    <h2>
+      Compare GDP per capita of multiple countries within selected year range. Click on one of the posts below to see
+      graphs
+      created by other users or create your own graph by clicking on "new post"
+      <span *ngIf="!(user.uid | async)">
+        (You must log in first)
+      </span>
+    </h2>
+  </div>
+
+  <div class="u-margin-bottom">
+    <div *ngIf="postSelected else emptyContainer">
+      <div class="dataContainer" *ngIf="postLoaded else loadingBlock">
+        <app-gdp-graph-canvas [countryGdpDataList]="countryGdpDataList">
+        </app-gdp-graph-canvas>
+        <div class="post-info">
+          <h2 class="post-headline">{{currentPost.payload.val().data.headline}}</h2>
+          <a [routerLink]="['/gdpData/edit/' + currentPost.key]" routerLinkActive="router-link-active"
+            *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating"
+            class="edit-button" mat-raised-button color="accent">Edit</a>
+          <button (click)="onDelete()" routerLinkActive="router-link-active"
+            *ngIf="currentPost.payload.val().userID === (user.uid | async)" [disabled]="!notUpdating"
+            class="remove-button" mat-raised-button color="warn">Delete
+          </button>
+        </div>
+      </div>
+      <ng-template #loadingBlock>
+        <div class="loadingContainer">
+          <div class="spinner-container">
+            <mat-spinner color="accent"></mat-spinner>
+          </div>
+        </div>
+      </ng-template>
     </div>
-    <ng-template #loadingBlock>
-      <div class="loadingContainer">
-        <div class="spinner-container">
-          <mat-spinner color="accent"></mat-spinner>
+    <ng-template #emptyContainer>
+      <div class="emptyContainer">
+        <div class="emptyContainer-text">
+          Please select a post
         </div>
       </div>
     </ng-template>
   </div>
-  <ng-template #emptyContainer>
-    <div class="emptyContainer">
-      <div class="emptyContainer-text">
-        Please select a post
+  <hr class="u-margin-bottom">
+  <div class="posts-container">
+    <mat-card class="post-card"
+      [ngClass]="{'selectable': post.key !== currentPost.key && (postLoaded || !postSelected), 'post-selected':post.key === currentPost.key}"
+      (click)="onLoadPost(post)" *ngFor="let post of postsGroup">
+      <div>
+        <span class="post__text">{{ post.payload.val().data.headline }} </span>
+        <span>
+          <mat-card-title>{{ post.payload.val().displayName }}</mat-card-title>
+          <mat-card-subtitle>{{ post.payload.val().postDate }}&nbsp;<span class="edited"
+              *ngIf="post.payload.val().data.edited">
+              Edited</span></mat-card-subtitle>
+        </span>
       </div>
+    </mat-card>
+    <div class="u-inline-center">
+      <button *ngIf="postsLoaded && postsGroup.length !== (database.getCount | async) " mat-button color="primary"
+        (click)="onLoadMore()">Load
+        more
+      </button>
+      <mat-spinner class="loading-spinner" *ngIf="!postsLoaded" color="warn"></mat-spinner>
     </div>
-  </ng-template>
-</div>
-<hr class="u-margin-bottom">
-<div class="posts-container">
-  <mat-card class="post-card"
-    [ngClass]="{'selectable': post.key !== currentPost.key && (postLoaded || !postSelected), 'post-selected':post.key === currentPost.key}"
-    (click)="onLoadPost(post)" *ngFor="let post of postsGroup">
-    <div>
-      <span class="post__text">{{ post.payload.val().data.headline }} </span>
-      <span>
-        <mat-card-title>{{ post.payload.val().displayName }}</mat-card-title>
-        <mat-card-subtitle>{{ post.payload.val().postDate }}&nbsp;<span class="edited"
-            *ngIf="post.payload.val().data.edited">
-            Edited</span></mat-card-subtitle>
-      </span>
-    </div>
-  </mat-card>
-  <div class="u-inline-center">
-    <button *ngIf="postsLoaded && postsGroup.length !== (database.getCount | async) " mat-button color="primary"
-      (click)="onLoadMore()">Load
-      more
-    </button>
-    <mat-spinner class="loading-spinner" *ngIf="!postsLoaded" color="warn"></mat-spinner>
   </div>
 </div>

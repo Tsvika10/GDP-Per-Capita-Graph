@@ -51,7 +51,7 @@ export class PostsComponent implements OnInit {
         const data = event.payload.val().data;
         this.postSelected = true;
         this.countriesDataService.onFetchGdpData(data.countryCodeList, data.startYear, data.endYear).then(res => {
-          this.countryGdpDataList = { list: res, startYear: data.startYear, endYear: data.endYear };
+          this.countryGdpDataList = new CountryGdpDataList(data.startYear, data.endYear, res);
           this.postLoaded = true;
         })
       }, 100);

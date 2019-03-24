@@ -21,6 +21,11 @@
     &-headline{
         display: inline;
         margin-right: 1rem;
+        margin-bottom: 5rem;
+    }
+
+    &-info {
+        margin: 0.9rem 0 2rem 0;
     }
 }
 
@@ -45,13 +50,10 @@
 .loadingContainer, .emptyContainer {
     background-color: #f0f0f0;
     border-radius: 5px;
-    width: 70%;
     position: relative;
     box-sizing: border-box;
-    min-width: 200px;
-    max-width: 50rem;
     height: 500px;
-    margin: 0 auto;
+    width: 100%;
     @media(max-width: 850px){
         width: 100%;
         height: 350px;
@@ -70,10 +72,7 @@ app-gdp-graph-canvas{
 }
 
 .dataContainer{
-    width: 70%;
-    min-width: 200px;
-    max-width: 50rem;
-    margin: 0 auto;
+    width: 100%;
     @media(max-width: 850px){
         width: 100%;
     }    
@@ -81,7 +80,7 @@ app-gdp-graph-canvas{
 }
 
 
-.posts-container{
+.container{
     width: 70%;
     min-width: 200px;
     max-width: 50rem;
@@ -94,13 +93,8 @@ app-gdp-graph-canvas{
 hr{
     margin: 1rem auto;
     display: block;
-    width: 70%;
-    min-width: 200px;
-    max-width: 50rem;
+    width: 100%;
     border-color: #3f51b5;
-    @media(max-width: 850px){
-        width: 100%;
-    }
 }
 
 .spinner-container, .emptyContainer-text{
@@ -121,4 +115,12 @@ hr{
 
 .loading-spinner{
     display: inline-block;
+}
+.header{
+    h1{
+        font-size: 2rem;
+    }
+    h2{
+        font-size: 1rem;
+    }
 }

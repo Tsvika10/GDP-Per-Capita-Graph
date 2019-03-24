@@ -143,8 +143,6 @@ export class GdpGraphComponent implements OnInit, OnDestroy {
     this.error = false
     this.duringUpdate = true;
     this.isCountrySelected = false;
-
-
   }
 
   onSaveGraph(headline) {

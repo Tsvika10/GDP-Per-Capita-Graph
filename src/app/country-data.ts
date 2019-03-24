@@ -16,9 +16,14 @@ export interface CountryGdpData {
     code: string,
     data: number[]
 }
-export interface CountryGdpDataList {
-    startYear: number,
-    endYear: number,
-    list: CountryGdpData[]
+export class CountryGdpDataList {
+    startYear: number;
+    endYear: number;
+    list: CountryGdpData[];
+    constructor(startYear, endYear, list) {
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.list = list;
+    }
 }
 
